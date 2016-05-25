@@ -64,11 +64,11 @@ def test_horizontal_graph_labels():
         u"Test8  ██████████████████████████████████████████████████████████████\n"
         u"Test9  ██████████████████████████████████████████████████████████████████████\n"
         u"Test10 ██████████████████████████████████████████████████████████████████████████████\n")
-    TEST_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    TEST_LABELS = ['Test0', 'T1', 'Test2', 'Test3', 'Test4', 'Test5', 'Test6',
-                   'Test7', 'Test8', 'Test9', 'Test10']
+    TEST_DATA = [('Test0', 0), ('T1', 1), ('Test2', 2), ('Test3', 3),
+                 ('Test4', 4), ('Test5', 5), ('Test6', 6), ('Test7', 7),
+                 ('Test8', 8), ('Test9', 9), ('Test10', 10)]
 
-    grph = textgraph.horizontal_graph(TEST_VALUES, labels=TEST_LABELS)
+    grph = textgraph.horizontal_graph(TEST_DATA)
     print("-Graph")
     print(grph)
     print("-Expected")

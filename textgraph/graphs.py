@@ -16,37 +16,43 @@ def spark(nums):
     parts = u' ▁▂▃▄▅▆▇█'
     fraction = max(nums) / float(len(parts) - 1)
     # Replace each number with its appropriate part then join
-    return ''.join(parts[int(round(x / fraction))] for x in nums)
+    return ''.join(parts[int(math.ceil(x / fraction))] for x in nums)
 
 
-def horizontal_graph(nums, labels=False, width=79):
+def horizontal_graph(data, width=79):
     """
-    Returns a horizontal graph from a list of integers, either labelled or
-    unlabeled. A specific width can be given
+    Returns a horizontal graph from a list of integers or
+    list of tuples (label, integer).
 
-    nums -- list of integers to graph
-    labels -- list of strings that correspond to the data
-    width -- width of the largest bar (int)
+    data -- list of integers or list of tuples (label, integer)
+    width -- width of output (int)
 
     """
     parts = ['█' * i for i in range(0, width)]
-    fraction = max(nums) / float(len(parts) - 1)
 
-    if labels:
-        # First pad labels
-        max_length = len(max(labels, key=len))
-        labels = [x + " " * (max_length - len(x)) for x in labels]
+    if isinstance(data[0], tuple):
+
+        fraction = max([v[1] for v in data]) / float(len(parts) - 1)
+
+        # Pad labels
+        max_label_length = len(max([v[0] for v in data], key=len))
+        data = [(v[0] + " " * (max_label_length - len(v[0])), v[1])
+                for v in data]
 
         # Create Lines and output
         out = ""
-        for i in range(len(nums)):
-            out = out + labels[i]
-            out = out + " " + parts[int(round(nums[i] / fraction))]
-            out = out + "\n"
+        out_line = "{label} {parts}\n"
+        for i in range(len(data)):
+            line_parts = parts[int(math.ceil(data[i][1] / fraction))]
+            out = out + out_line.format(label=data[i][0],
+                                        parts=line_parts)
         return out
 
+    elif isinstance(data[0], int):
+        fraction = max(data) / float(len(parts) - 1)
+        return ''.join(parts[int(math.ceil(x / fraction))] + "\n" for x in data)
     else:
-        return ''.join(parts[int(round(x / fraction))] + "\n" for x in nums)
+        raise TypeError
 
 
 def vertical_graph(nums, height=10):
